@@ -1,0 +1,42 @@
+digraph "clusterexample.py" {
+	graph [label="example.py"]
+	1 [label="def foo():
+fib_gen = fib()
+"]
+	"1_calls" [label=fib shape=box]
+	1 -> "1_calls" [label=calls style=dashed]
+	15 [label="for _ in range(10):
+"]
+	16 [label="next(fib_gen)
+"]
+	"16_calls" [label=next shape=box]
+	16 -> "16_calls" [label=calls style=dashed]
+	16 -> 15 [label=""]
+	15 -> 16 [label="range(10)"]
+	1 -> 15 [label=""]
+	subgraph clusterfoo {
+		graph [label=foo]
+		3 [label="i = 0
+"]
+		4 [label="while True:
+"]
+		5 [label="i += 1
+if i == 3:
+"]
+		6 [label="for j in range(3):
+"]
+		9 [label="i += j
+if j == 2:
+"]
+		10 [label="return i
+"]
+		9 -> 10 [label="j == 2"]
+		9 -> 6 [label="(j != 2)"]
+		6 -> 9 [label="range(3)"]
+		6 -> 10 [label=""]
+		5 -> 6 [label="i == 3"]
+		5 -> 4 [label="(i != 3)"]
+		4 -> 5 [label=True]
+		3 -> 4 [label=""]
+	}
+}
